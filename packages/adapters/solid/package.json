@@ -55,12 +55,12 @@
 		"@types/node": "ts5.4",
 		"@types/normalize-package-data": "2.4.4",
 		"solid-js": "1.8.17",
-		"typescript": "5.5.2",
+		"typescript": "5.5.3",
 		"unbuild": "1.2.1"
 	},
 	"peerDependencies": {
 		"@public-ui/components": "workspace:*",
-		"solid-js": ">=1.8.17"
+		"solid-js": ">=1.8.18"
 	},
 	"sideEffects": false,
 	"type": "module",
