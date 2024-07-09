@@ -2,7 +2,7 @@ import { Component, Element, h, Host, type JSX, Method, Prop, State, Watch } fro
 
 import type { ActivePropType, HrefPropType, LabelPropType, OpenPropType, TreeItemAPI, TreeItemStates } from '../../schema';
 import { validateActive, validateHref, validateLabel, validateOpen } from '../../schema';
-import { KolLinkTag } from '../../core/component-names';
+import { KolLinkTag, KolTreeTag } from '../../core/component-names';
 
 @Component({
 	tag: `kol-tree-item-wc`,
@@ -10,6 +10,8 @@ import { KolLinkTag } from '../../core/component-names';
 })
 export class KolTreeItemWc implements TreeItemAPI {
 	private linkElement!: HTMLKolLinkWcElement;
+
+	@State() private level?: number;
 
 	@Element() host!: HTMLElement;
 
@@ -40,7 +42,7 @@ export class KolTreeItemWc implements TreeItemAPI {
 										+
 									</span>
 								))}{' '}
-							{this.state._label}
+							(lvl{this.level}) {this.state._label}
 						</span>
 					</KolLinkTag>
 					<ul hidden={!this.state._hasChildren || !this.state._open} role="group">
@@ -102,6 +104,17 @@ export class KolTreeItemWc implements TreeItemAPI {
 		this.validateHref(this._href);
 
 		this.checkForChildren();
+		this.determineTreeItemDepth();
+	}
+
+	private determineTreeItemDepth() {
+		let level = 0;
+		let traverseItem: HTMLElement | null = (this.host.parentNode as unknown as ShadowRoot).host.parentNode as HTMLElement;
+		while (traverseItem !== null && traverseItem.tagName.toLowerCase() !== KolTreeTag && traverseItem !== document.body) {
+			traverseItem = traverseItem.parentElement;
+			level += 1;
+		}
+		this.level = level;
 	}
 
 	private handleSlotchange() {
