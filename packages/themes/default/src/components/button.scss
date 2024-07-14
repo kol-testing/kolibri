@@ -19,4 +19,9 @@
 	}
 
 	@include kol-button;
+
+	*{
+		color: hotpink !important;
+		border: 1px solid hotpink !important;
+	}
 }
